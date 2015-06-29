@@ -21,14 +21,21 @@ $(document).ready(function(){
 
     //Comparing the guess with the winning number
     this.checkGuess = function(guess) {
-      if (guess == winningNumber) {
+      var guessDifference = Math.abs(winningNumber - guess);
+      if (winningNumber == guess) {
         victory(guess);
-      } else if (guess > winningNumber) {
-        highGuess(guess);
-      } else if (guess < winningNumber) {
-        lowGuess(guess);
+      } else if (guessDifference <= 5) {
+        veryHotGuess(guess);
+      } else if (guessDifference <= 10) {
+        hotGuess(guess);
+      } else if (guessDifference >= 10 && guessDifference <= 20) {
+        warmGuess(guess);
+      } else if (guessDifference >= 20 && guessDifference <= 30) {
+        coldGuess(guess);
+      } else if (guessDifference >= 30 && guessDifference <= 40) {
+        veryColdGuess(guess);
       } else {
-        alert("Guess invalid. Try again!");
+        freezingGuess(guess);
       }
     };
 
@@ -43,20 +50,45 @@ $(document).ready(function(){
       $("#feedback").html("Make a guess!");
     };
 
-    //Feedback for various guesses
+    //Call functions for the guess condition
     function victory(guess) {
       addWinningGuess(guess);
-      $("#feedback").html("You won!");
+      setFeedback("You won!");
     }
 
-    function highGuess(guess) {
-      addHighGuess(guess);
-      $("#feedback").html("Too high!");
+    function veryHotGuess(guess) {
+      addHotGuess(guess);
+      setFeedback("YOW! VERY HOT!!!");
     }
 
-    function lowGuess(guess) {
-      addLowGuess(guess);
-      $("#feedback").html("Too low!");
+    function hotGuess(guess) {
+      addHotGuess(guess);
+      setFeedback("Getting Hot!!");
+    }
+
+    function warmGuess(guess) {
+      addWarmGuess(guess);
+      setFeedback("Warm.");
+    }
+
+    function coldGuess(guess) {
+      addColdGuess(guess);
+      setFeedback("Cold!");
+    }
+
+    function veryColdGuess(guess) {
+      addColdGuess(guess);
+      setFeedback("Brrr..Very cold!");
+    }
+
+    function freezingGuess(guess) {
+      addFreezingGuess(guess);
+      setFeedback("FREEZING!");
+    }
+
+    //Set feedback
+    function setFeedback(feedback) {
+      $("#feedback").html(feedback);
     }
 
     //Adding Guesses to list and Updating Count
@@ -70,14 +102,24 @@ $(document).ready(function(){
       $("#guessList").append("<li class='victory'>" + guess + '</li>');
     }
 
-    function addHighGuess(guess) {
+    function addHotGuess(guess) {
       updateCount();
-      $("#guessList").append("<li class='high'>" + guess + '</li>');
+      $("#guessList").append("<li class='hot'>" + guess + '</li>');
     }
 
-    function addLowGuess(guess) {
+    function addWarmGuess(guess) {
       updateCount();
-      $("#guessList").append("<li class='low'>" + guess + '</li>');
+      $("#guessList").append("<li class='warm'>" + guess + '</li>');
+    }
+
+    function addColdGuess(guess) {
+      updateCount();
+      $("#guessList").append("<li class='cold'>" + guess + '</li>');
+    }
+
+    function addFreezingGuess(guess) {
+      updateCount();
+      $("#guessList").append("<li class='freezing'>" + guess + '</li>');
     }
 
   }

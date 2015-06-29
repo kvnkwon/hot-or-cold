@@ -320,12 +320,20 @@ ul.guessBox li {
 	color: #fff;
 }
 
-.high {
+.hot {
 	background-color: #FF1919 !important;
 }
 
-.low {
+.cold {
 	background-color: #007ACC !important;
+}
+
+.warm {
+	background-color: #FFBF00 !important;
+}
+
+.freezing {
+	background-color: #A9D0F5 !important;
 }
 
 .victory {
