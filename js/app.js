@@ -11,48 +11,28 @@ $(document).ready(function(){
 		$(".overlay").fadeOut(1000);
 	});
 
-  $('#userGuess').focus();
-  var game = new Game();
-
-  //Guess a number
-  $(document).on('submit', '.guess-form', function(event) {
-    event.preventDefault();
-    var guessNumber = $('input[name="userGuess"]').val();
-    game.checkGuess(guessNumber);
-  });
-
-  //New game
-  $(document).on('click', '.new', function(event) {
-    event.preventDefault();
-    game.newGame();
-  });
-
-
-  // Generate a random number
-
   function Game() {
+
+    //Generate random winning number
     var winningNumber = Math.floor((Math.random() * 100) + 1);
+
+    //Create the guess count variable
     var guessCount = 0;
 
+    //Comparing the guess with the winning number
     this.checkGuess = function(guess) {
-      guessCount += 1;
       if (guess == winningNumber) {
-        $("#guessList").append("<li class='victory'>" + guess + '</li>');
-        $("#count").html(guessCount);
-        $("#feedback").html("You won!");
+        victory(guess);
       } else if (guess > winningNumber) {
-        $("#guessList").append("<li class='high'>" + guess + '</li>');
-        $("#count").html(guessCount);
-        $("#feedback").html("Too high!");
+        highGuess(guess);
       } else if (guess < winningNumber) {
-        $("#guessList").append("<li class='low'>" + guess + '</li>');
-        $("#count").html(guessCount);
-        $("#feedback").html("Too low!");
+        lowGuess(guess);
       } else {
         alert("Guess invalid. Try again!");
       }
     };
 
+    //Reset and start new game
     this.newGame = function() {
       winningNumber = Math.floor((Math.random() * 100) + 1);
       guessCount = 0;
@@ -63,7 +43,61 @@ $(document).ready(function(){
       $("#feedback").html("Make a guess!");
     };
 
+    //Feedback for various guesses
+    function victory(guess) {
+      addWinningGuess(guess);
+      $("#feedback").html("You won!");
+    }
+
+    function highGuess(guess) {
+      addHighGuess(guess);
+      $("#feedback").html("Too high!");
+    }
+
+    function lowGuess(guess) {
+      addLowGuess(guess);
+      $("#feedback").html("Too low!");
+    }
+
+    //Adding Guesses to list and Updating Count
+    function updateCount() {
+      guessCount += 1;
+      $("#count").html(guessCount);
+    }
+
+    function addWinningGuess(guess) {
+      updateCount();
+      $("#guessList").append("<li class='victory'>" + guess + '</li>');
+    }
+
+    function addHighGuess(guess) {
+      updateCount();
+      $("#guessList").append("<li class='high'>" + guess + '</li>');
+    }
+
+    function addLowGuess(guess) {
+      updateCount();
+      $("#guessList").append("<li class='low'>" + guess + '</li>');
+    }
+
   }
+
+  //Start new game on page load
+  $('#userGuess').focus();
+  var game = new Game();
+
+  //Guess a number
+  $(document).on('submit', '.guess-form', function(event) {
+    event.preventDefault();
+    var guessNumber = $('input[name="userGuess"]').val();
+    game.checkGuess(guessNumber);
+  });
+
+  //Reset and play new game
+  $(document).on('click', '.new', function(event) {
+    event.preventDefault();
+    game.newGame();
+  });
 
 });
 
